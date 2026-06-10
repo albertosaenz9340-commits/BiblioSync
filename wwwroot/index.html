@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioSync — Sistema de Gestión Educativa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- =====================================================
+     PANTALLA AUTH
+===================================================== -->
+<section id="pantallaAuth">
+    <div class="contenedor-auth">
+
+        <div class="logo-auth">
+            <div class="logo-icono">📚</div>
+            <h1>BiblioSync</h1>
+            <p>Sistema de Gestión de Recursos Educativos</p>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="formLogin" class="form-auth">
+            <h2>Iniciar Sesión</h2>
+            <div class="form-grupo">
+                <label>Usuario (cédula)</label>
+                <input type="text" id="loginUsuario" placeholder="Tu número de cédula" autocomplete="username">
+                <label>Contraseña</label>
+                <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password">
+                <button onclick="iniciarSesion()">Ingresar al sistema</button>
+            </div>
+            <div class="links-auth">
+                <a href="#" onclick="mostrarFormAuth('registro')">Crear cuenta nueva</a>
+                <a href="#" onclick="mostrarFormAuth('recuperar')">Olvidé mi contraseña</a>
+            </div>
+        </div>
+
+        <!-- REGISTRO -->
+        <div id="formRegistro" class="form-auth" style="display:none;">
+            <h2>Crear Cuenta</h2>
+            <div class="form-grupo">
+                <label>Nombre completo</label>
+                <input type="text" id="regNombre" placeholder="Nombres y apellidos">
+                <label>Cédula (será tu usuario)</label>
+                <input type="text" id="regCedula" placeholder="Número de cédula">
+                <label>Correo institucional</label>
+                <input type="email" id="regCorreo" placeholder="correo@institucion.edu.co">
+                <label>Contraseña (mín. 6 caracteres)</label>
+                <input type="password" id="regPassword" placeholder="Contraseña">
+                <label>Confirmar contraseña</label>
+                <input type="password" id="regPasswordConfirm" placeholder="Repite la contraseña">
+                <label>Rol</label>
+                <select id="regRol">
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Docente">Docente</option>
+                </select>
+                <button onclick="registrarUsuario()">Registrarme</button>
+            </div>
+            <div class="links-auth">
+                <a href="#" onclick="mostrarFormAuth('login')">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </div>
+
+        <!-- RECUPERAR — PASO 1 -->
+        <div id="formRecuperar" class="form-auth" style="display:none;">
+            <h2>Recuperar Contraseña</h2>
+            <div id="pasoSolicitarCodigo">
+                <p class="form-subtitulo">Ingresa tu cédula para recibir un código de recuperación.</p>
+                <div class="form-grupo">
+                    <label>Cédula</label>
+                    <input type="text" id="recCedula" placeholder="Tu número de cédula">
+                    <button onclick="solicitarCodigo()">Obtener código</button>
+                </div>
+            </div>
+            <div id="pasoCodigoPassword" style="display:none;">
+                <div class="codigo-generado-box" id="codigoMostrado" style="display:none;">
+                    <span class="codigo-label">Tu código de recuperación:</span>
+                    <span class="codigo-valor" id="codigoValor"></span>
+                    <span class="codigo-expira">⏱ Expira en 15 minutos</span>
+                </div>
+                <div class="form-grupo">
+                    <label>Código de recuperación</label>
+                    <input type="text" id="recCodigo" placeholder="Ej: K7MN-P3XQ" maxlength="9"
+                           style="text-transform:uppercase;letter-spacing:2px;font-weight:bold;">
+                    <label>Nueva contraseña</label>
+                    <input type="password" id="recPasswordNueva" placeholder="Mínimo 6 caracteres">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" id="recPasswordConfirm" placeholder="Repite la nueva contraseña">
+                    <button onclick="recuperarPassword()">Actualizar contraseña</button>
+                </div>
+            </div>
+            <div class="links-auth">
+                <a href="#" onclick="mostrarFormAuth('login')">Volver al inicio de sesión</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =====================================================
+     PANTALLA PRINCIPAL
+===================================================== -->
+<section id="pantallaPrincipal" style="display:none;">
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-izq">
+            <span class="header-logo">📚</span>
+            <span class="header-titulo">BiblioSync</span>
+        </div>
+        <div class="header-der" id="infoUsuario" style="display:none;">
+            <div class="usuario-badge">
+                <span class="usuario-rol" id="badgeRol"></span>
+                <span class="usuario-nombre" id="nombreUsuarioNav"></span>
+            </div>
+            <div class="perfil-menu-wrapper">
+                <button class="btn-perfil-header" id="btnMenuPerfil" onclick="toggleMenuPerfil()">
+                    <img id="fotoNavbar" src="" alt="" class="foto-navbar" style="display:none;">
+                    <span id="inicialNavbar" class="inicial-navbar"></span>
+                </button>
+                <div id="menuPerfil" class="perfil-dropdown" style="display:none;">
+                    <a href="#" onclick="mostrarSeccion('mi-perfil')">👤 Mi perfil</a>
+                    <a href="#" onclick="abrirModalCambiarPassword()">🔑 Cambiar contraseña</a>
+                    <a href="#" onclick="mostrarSeccion('solicitar-admin')" id="menuSolicitarAdmin">⭐ Solicitar ser Admin</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" onclick="confirmarEliminarCuenta()" class="opcion-peligro">🗑️ Eliminar mi cuenta</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" onclick="cerrarSesion()" class="opcion-salir">↩ Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+
+        <!-- NAV LATERAL -->
+        <nav class="app-nav" id="appNav">
+            <ul>
+                <li>
+                    <a href="#" id="navInicio" onclick="mostrarSeccion('inicio')">
+                        <span class="nav-icono">🏠</span>
+                        <span class="nav-texto">Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="navLibros" onclick="mostrarSeccion('libros')">
+                        <span class="nav-icono">📖</span>
+                        <span class="nav-texto">Catálogo</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="navMisPrestamos" onclick="mostrarSeccion('mis-prestamos')">
+                        <span class="nav-icono">🔖</span>
+                        <span class="nav-texto">Mis Préstamos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="navMensajes" onclick="mostrarSeccion('mensajes')">
+                        <span class="nav-icono">💬</span>
+                        <span class="nav-texto">Mensajes</span>
+                        <span class="badge-mensajes" id="badgeMensajes" style="display:none;">0</span>
+                    </a>
+                </li>
+                <!-- Solo Admin -->
+                <li class="nav-admin" id="navItemPrestamos" style="display:none;">
+                    <a href="#" id="navPrestamos" onclick="mostrarSeccion('prestamos')">
+                        <span class="nav-icono">📋</span>
+                        <span class="nav-texto">Préstamos</span>
+                    </a>
+                </li>
+                <li class="nav-admin" id="navItemUsuarios" style="display:none;">
+                    <a href="#" id="navUsuarios" onclick="mostrarSeccion('usuarios')">
+                        <span class="nav-icono">👥</span>
+                        <span class="nav-texto">Usuarios</span>
+                    </a>
+                </li>
+                <li class="nav-admin" id="navItemRegistroLibro" style="display:none;">
+                    <a href="#" id="navRegistroLibro" onclick="mostrarSeccion('registro-libro')">
+                        <span class="nav-icono">➕</span>
+                        <span class="nav-texto">Registrar Libro</span>
+                    </a>
+                </li>
+                <li class="nav-admin" id="navItemReportes" style="display:none;">
+                    <a href="#" id="navReportes" onclick="mostrarSeccion('reportes')">
+                        <span class="nav-icono">📊</span>
+                        <span class="nav-texto">Reportes</span>
+                    </a>
+                </li>
+                <!-- Solo Admin Principal -->
+                <li class="nav-admin-principal" id="navItemSolicitudes" style="display:none;">
+                    <a href="#" id="navSolicitudes" onclick="mostrarSeccion('solicitudes-admin')">
+                        <span class="nav-icono">⭐</span>
+                        <span class="nav-texto">Solicitudes</span>
+                        <span class="badge-solicitudes" id="badgeSolicitudes" style="display:none;">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <main id="contenidoPrincipal" class="app-main"></main>
+
+    </div>
+</section>
+
+<!-- =====================================================
+     MODAL — CAMBIAR CONTRASEÑA
+===================================================== -->
+<div id="modalCambiarPassword" class="modal">
+    <div class="modal-contenido">
+        <button class="btn-cerrar-modal" onclick="cerrarModal('modalCambiarPassword')">✕</button>
+        <h2>🔑 Cambiar Contraseña</h2>
+        <p class="modal-subtitulo">Ingresa tu contraseña actual para confirmar el cambio.</p>
+        <div class="form-grupo">
+            <label>Contraseña actual</label>
+            <input type="password" id="cpActual" placeholder="Contraseña actual">
+            <label>Nueva contraseña</label>
+            <input type="password" id="cpNueva" placeholder="Mínimo 6 caracteres">
+            <label>Confirmar nueva contraseña</label>
+            <input type="password" id="cpConfirm" placeholder="Repite la nueva contraseña">
+            <button onclick="cambiarPassword()">Actualizar contraseña</button>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL — CONFIRMAR ELIMINAR CUENTA
+===================================================== -->
+<div id="modalConfirmarEliminar" class="modal">
+    <div class="modal-contenido modal-alerta">
+        <h2>🗑️ Eliminar cuenta</h2>
+        <p class="modal-subtitulo">
+            Esta acción es <strong>irreversible</strong>. Se eliminarán tu cuenta,
+            préstamos y todos tus mensajes.
+        </p>
+        <div class="modal-acciones">
+            <button class="btn-secundario" onclick="cerrarModal('modalConfirmarEliminar')">Cancelar</button>
+            <button class="btn-peligro" onclick="eliminarCuenta()">Sí, eliminar mi cuenta</button>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL — CONFIRMAR DEVOLUCIÓN
+===================================================== -->
+<div id="modalConfirmarDevolucion" class="modal">
+    <div class="modal-contenido modal-alerta">
+        <h2>📦 Registrar devolución</h2>
+        <p class="modal-subtitulo" id="textoConfirmDevolucion">
+            ¿Confirmas la devolución de este libro?
+        </p>
+        <div class="modal-acciones">
+            <button class="btn-secundario" onclick="cerrarModal('modalConfirmarDevolucion')">Cancelar</button>
+            <button class="btn-accion" onclick="confirmarDevolucion()">Confirmar devolución</button>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     POPOVER — DETALLE DE LIBRO
+===================================================== -->
+<div id="popoverLibroOverlay" onclick="cerrarPopoverLibro()"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:799;"></div>
+
+<div id="popoverLibro" style="display:none;position:fixed;z-index:800;
+    left:50%;top:50%;transform:translate(-50%,-50%);
+    background:#fff;border-radius:16px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.25);
+    width:440px;max-width:92vw;max-height:82vh;
+    overflow:hidden;flex-direction:column;
+    animation:modalEntrar 0.2s ease;">
+    <div style="display:flex;align-items:center;justify-content:space-between;
+        padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;
+        background:#fff;position:sticky;top:0;">
+        <span style="font-size:15px;font-weight:700;color:var(--primary);">Detalle del libro</span>
+        <button onclick="cerrarPopoverLibro()" style="
+            background:var(--bg-body);border:1px solid var(--border);border-radius:6px;
+            width:30px;height:30px;cursor:pointer;font-size:14px;color:var(--text-muted);">✕</button>
+    </div>
+    <div id="popoverLibroContenido" style="overflow-y:auto;padding:20px;"></div>
+</div>
+
+<!-- =====================================================
+     MODAL — VER PERFIL DE USUARIO
+===================================================== -->
+<div id="modalVerPerfil" class="modal">
+    <div class="modal-contenido">
+        <button class="btn-cerrar-modal" onclick="cerrarModal('modalVerPerfil')">✕</button>
+        <div id="contenidoModalPerfil"></div>
+    </div>
+</div>
+
+<!-- =====================================================
+     MODAL — VISOR DE PDF
+===================================================== -->
+<div id="modalPdf" class="modal modal-fullscreen">
+    <div class="modal-contenido modal-pdf-contenido">
+        <div class="pdf-header">
+            <span id="pdfTitulo" class="pdf-titulo"></span>
+            <button class="btn-cerrar-modal" onclick="cerrarModalPdf()">✕</button>
+        </div>
+        <iframe id="pdfViewer" class="pdf-iframe" src="" title="Visor PDF"></iframe>
+    </div>
+</div>
+
+<!-- =====================================================
+     TOAST CONTAINER
+===================================================== -->
+<div id="toastContenedor"></div>
+
+<!-- SignalR client library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
