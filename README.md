@@ -1,12 +1,12 @@
-# 📚 BiblioSync v2.0
+# BiblioSync v2.0
 ### Sistema Inteligente de Gestión y Sincronización de Recursos Educativos
 > Versión 2.0 — Departamento de Atlántico
 
-🌐 **Sistema en producción:** https://bibliosync-production.up.railway.app
+**Sistema en producción:** https://bibliosync-production.up.railway.app
 
 ---
 
-## 📋 Descripción
+## Descripción
 
 BiblioSync es un sistema web completo para la gestión de préstamos de material bibliográfico en instituciones educativas. La versión 2.0 incorpora mensajería interna en tiempo real con SignalR, perfiles de usuario con foto, acceso controlado a PDFs por préstamo activo, almacenamiento en Cloudinary, sistema de administración jerárquica, sanción automática y notificaciones persistentes.
 
@@ -21,63 +21,63 @@ BiblioSync es un sistema web completo para la gestión de préstamos de material
 
 ---
 
-## 🗂️ Estructura del proyecto
+## Estructura del proyecto
 
 ```
 BiblioSync/
-│
-├── Controllers/
-│   ├── UsuariosController.cs       # Auth JWT, perfil, foto, jerarquía, solicitudes admin
-│   ├── LibrosController.cs         # Catálogo, portadas, PDFs, firma Cloudinary
-│   ├── PrestamosController.cs      # Préstamos, devoluciones, acceso controlado a PDF
-│   └── MensajesController.cs       # Mensajería interna, conversaciones, no leídos
-│
-├── Data/
-│   └── AppDbContext.cs             # Contexto Entity Framework Core
-│
-├── DTOs/
-│   ├── RegistroDTO.cs              # + campo EsPrincipal
-│   ├── LoginDTO.cs
-│   ├── LibroDTO.cs
-│   ├── PrestamoDTO.cs
-│   ├── PerfilDTO.cs                # PerfilDTO + CambioEstadoDTO + CambioRolDTO
-│   ├── MensajeDTO.cs               # MensajeDTO + MarcarLeidoDTO
-│   ├── SolicitudRecuperacionDTO.cs
-│   ├── SolicitudAdminDTO.cs        # SolicitudAdminDTO + ResolucionSolicitudDTO
-│   ├── CambioPasswordDTO.cs
-│   └── ConfirmarPdfDTO.cs          # Para upload directo a Cloudinary
-│
-├── Hubs/
-│   └── ChatHub.cs                  # SignalR — WebSockets, grupos, presencia online
-│
-├── Models/
-│   ├── Usuario.cs                  # Roles, jerarquía, foto, rol anterior
-│   ├── Libro.cs                    # Sinopsis, portada y PDF en Cloudinary
-│   ├── Prestamo.cs
-│   ├── CodigoRecuperacion.cs
-│   ├── Mensaje.cs
-│   └── SolicitudAdmin.cs
-│
-├── Services/
-│   ├── CloudinaryService.cs        # Subida y eliminación de imágenes y PDFs
-│   └── SancionAutomaticaService.cs # BackgroundService — sanción automática cada hora
-│
-├── wwwroot/
-│   ├── index.html                  # SPA con 9 secciones + 5 modales + popover libro
-│   ├── style.css                   # Paleta institucional completa
-│   ├── script.js                   # ~2200 líneas — lógica completa del frontend
-│   └── img/
-│       └── libro-placeholder.png
-│
-├── appsettings.json
-├── BiblioSync.csproj
-├── database.sql
-└── Program.cs
+
+Controllers/
+UsuariosController.cs # Auth JWT, perfil, foto, jerarquía, solicitudes admin
+LibrosController.cs # Catálogo, portadas, PDFs, firma Cloudinary
+PrestamosController.cs # Préstamos, devoluciones, acceso controlado a PDF
+MensajesController.cs # Mensajería interna, conversaciones, no leídos
+
+Data/
+AppDbContext.cs # Contexto Entity Framework Core
+
+DTOs/
+RegistroDTO.cs # + campo EsPrincipal
+LoginDTO.cs
+LibroDTO.cs
+PrestamoDTO.cs
+PerfilDTO.cs # PerfilDTO + CambioEstadoDTO + CambioRolDTO
+MensajeDTO.cs # MensajeDTO + MarcarLeidoDTO
+SolicitudRecuperacionDTO.cs
+SolicitudAdminDTO.cs # SolicitudAdminDTO + ResolucionSolicitudDTO
+CambioPasswordDTO.cs
+ConfirmarPdfDTO.cs # Para upload directo a Cloudinary
+
+Hubs/
+ChatHub.cs # SignalR — WebSockets, grupos, presencia online
+
+Models/
+Usuario.cs # Roles, jerarquía, foto, rol anterior
+Libro.cs # Sinopsis, portada y PDF en Cloudinary
+Prestamo.cs
+CodigoRecuperacion.cs
+Mensaje.cs
+SolicitudAdmin.cs
+
+Services/
+CloudinaryService.cs # Subida y eliminación de imágenes y PDFs
+SancionAutomaticaService.cs # BackgroundService — sanción automática cada hora
+
+wwwroot/
+index.html # SPA con 9 secciones + 5 modales + popover libro
+style.css # Paleta institucional completa
+script.js # ~2200 líneas — lógica completa del frontend
+img/
+libro-placeholder.png
+
+appsettings.json
+BiblioSync.csproj
+database.sql
+Program.cs
 ```
 
 ---
 
-## ⚙️ Requisitos previos
+## Requisitos previos
 
 | Herramienta | Versión mínima |
 |---|---|
@@ -88,7 +88,7 @@ BiblioSync/
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### 1. Crear la base de datos
 
@@ -100,20 +100,20 @@ source C:/ruta/al/proyecto/BiblioSync/database.sql
 
 ```json
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "server=localhost;database=bibliosync;user=root;password=TU_PASSWORD;"
-  },
-  "Jwt": {
-    "Secret": "BiblioSync-Clave-Secreta-JWT-2026-Atlantico-32ch"
-  },
-  "Prestamo": {
-    "DiasPlazo": 8
-  },
-  "Cloudinary": {
-    "CloudName": "TU_CLOUD_NAME",
-    "ApiKey":    "TU_API_KEY",
-    "ApiSecret": "TU_API_SECRET"
-  }
+"ConnectionStrings": {
+"DefaultConnection": "server=localhost;database=bibliosync;user=root;password=TU_PASSWORD;"
+},
+"Jwt": {
+"Secret": "BiblioSync-Clave-Secreta-JWT-2026-Atlantico-32ch"
+},
+"Prestamo": {
+"DiasPlazo": 8
+},
+"Cloudinary": {
+"CloudName": "TU_CLOUD_NAME",
+"ApiKey": "TU_API_KEY",
+"ApiSecret": "TU_API_SECRET"
+}
 }
 ```
 
@@ -135,13 +135,13 @@ http://localhost:5000
 
 ---
 
-## 👤 Primer acceso
+## Primer acceso
 
-Al abrir el formulario de registro por primera vez, el selector de rol mostrará la opción **⭐ Administrador Principal**. El primer usuario que se registre con ese rol se convierte en el responsable del sistema. A partir del segundo registro, esa opción desaparece.
+Al abrir el formulario de registro por primera vez, el selector de rol mostrará la opción ** Administrador Principal**. El primer usuario que se registre con ese rol se convierte en el responsable del sistema. A partir del segundo registro, esa opción desaparece.
 
 ---
 
-## 👥 Roles del sistema
+## Roles del sistema
 
 | Rol | Jerarquía | Permisos |
 |---|---|---|
@@ -152,7 +152,7 @@ Al abrir el formulario de registro por primera vez, el selector de rol mostrará
 
 ---
 
-## 🔐 Seguridad
+## Seguridad
 
 ### JWT
 Token con 4 claims: `id`, `rol`, `jerarquia`, `nombre`. Vigencia de 8 horas.
@@ -171,14 +171,14 @@ Todos los datos del servidor pasan por `esc()` antes de insertarse en el DOM.
 
 ---
 
-## 💬 Mensajería en tiempo real
+## Mensajería en tiempo real
 
 ### Eventos SignalR
 
 | Evento | Descripción |
 |---|---|
 | `NuevoMensaje` | Notificación con foto, nombre y preview |
-| `MensajesLeidos` | Confirmación de lectura (✓✓) |
+| `MensajesLeidos` | Confirmación de lectura () |
 | `UsuarioEscribiendo` | Indicador animado "está escribiendo..." |
 | `UsuarioDejoDeEscribir` | Oculta el indicador |
 | `UsuarioConectado` | Actualiza punto verde de presencia online |
@@ -197,19 +197,19 @@ Todos los datos del servidor pasan por `esc()` antes de insertarse en el DOM.
 
 ---
 
-## 🔔 Notificaciones persistentes
+## Notificaciones persistentes
 
 Aparecen en la esquina superior derecha y no desaparecen hasta que el usuario las cierra:
 
-- **⏰ Préstamo por vencer** — cuando faltan menos de 24 horas
-- **🚨 Préstamo urgente** — cuando faltan menos de 12 horas
-- **⭐ Solicitud aprobada** — notificación inmediata al usuario
-- **❌ Solicitud rechazada** — notificación inmediata al usuario
+- ** Préstamo por vencer** — cuando faltan menos de 24 horas
+- ** Préstamo urgente** — cuando faltan menos de 12 horas
+- ** Solicitud aprobada** — notificación inmediata al usuario
+- ** Solicitud rechazada** — notificación inmediata al usuario
 - Se cierran automáticamente al devolver el libro correspondiente
 
 ---
 
-## ⚙️ Sanción automática
+## Sanción automática
 
 `SancionAutomaticaService` corre cada hora en segundo plano:
 
@@ -219,7 +219,7 @@ Aparecen en la esquina superior derecha y no desaparecen hasta que el usuario la
 
 ---
 
-## 🌐 Endpoints de la API
+## Endpoints de la API
 
 ### Usuarios — `/api/Usuarios`
 
@@ -286,78 +286,78 @@ Aparecen en la esquina superior derecha y no desaparecen hasta que el usuario la
 
 ---
 
-## 🗄️ Modelo de datos
+## Modelo de datos
 
 ```
 usuarios
-├── id, nombre, usuario_login UNIQUE, password (BCrypt)
-├── cedula UNIQUE, correo UNIQUE
-├── tipo_rol ('Estudiante'|'Docente'|'Administrador')
-├── jerarquia ('Principal'|'Normal')
-├── estado ('Activo'|'Sancionado'|'Inactivo')
-├── descripcion, foto_url, foto_public_id
-├── rol_anterior                   ← rol antes de ser Admin
-└── fecha_registro
+id, nombre, usuario_login UNIQUE, password (BCrypt)
+cedula UNIQUE, correo UNIQUE
+tipo_rol ('Estudiante'|'Docente'|'Administrador')
+jerarquia ('Principal'|'Normal')
+estado ('Activo'|'Sancionado'|'Inactivo')
+descripcion, foto_url, foto_public_id
+rol_anterior ← rol antes de ser Admin
+fecha_registro
 
 codigos_recuperacion
-├── id, usuario_id FK, codigo (XXXX-XXXX)
-└── expiracion (UTC+15min), usado
+id, usuario_id FK, codigo (XXXX-XXXX)
+expiracion (UTC+15min), usado
 
 solicitudes_admin
-├── id, usuario_id FK, mensaje
-├── estado ('Pendiente'|'Aprobada'|'Rechazada')
-└── fecha_solicitud, fecha_resolucion
+id, usuario_id FK, mensaje
+estado ('Pendiente'|'Aprobada'|'Rechazada')
+fecha_solicitud, fecha_resolucion
 
 libros
-├── id, titulo, autor, isbn UNIQUE
-├── editorial, anio, categoria, cantidad (≥0)
-├── sinopsis
-├── imagen, imagen_public_id       ← Cloudinary
-└── pdf_url, pdf_public_id         ← Cloudinary
+id, titulo, autor, isbn UNIQUE
+editorial, anio, categoria, cantidad (≥0)
+sinopsis
+imagen, imagen_public_id ← Cloudinary
+pdf_url, pdf_public_id ← Cloudinary
 
 prestamos
-├── id, usuario_id FK, libro_id FK
-├── fecha_prestamo, fecha_devolucion (UTC)
-├── estado ('Activo'|'Devuelto'|'Vencido')
-└── referencia UNIQUE (BS-AAAAMMDD-XXXXXX)
+id, usuario_id FK, libro_id FK
+fecha_prestamo, fecha_devolucion (UTC)
+estado ('Activo'|'Devuelto'|'Vencido')
+referencia UNIQUE (BS-AAAAMMDD-XXXXXX)
 
 mensajes
-├── id, remitente_id FK, receptor_id FK
-├── contenido, leido
-└── fecha_envio
+id, remitente_id FK, receptor_id FK
+contenido, leido
+fecha_envio
 ```
 
 ---
 
-## 📦 Dependencias
+## Dependencias
 
 ```xml
-Microsoft.EntityFrameworkCore                   8.0.0
-Microsoft.EntityFrameworkCore.Design            8.0.0
-Pomelo.EntityFrameworkCore.MySql                8.0.0
-Microsoft.AspNetCore.Authentication.JwtBearer   8.0.0
-System.IdentityModel.Tokens.Jwt                 7.3.1
-BCrypt.Net-Next                                 4.0.3
-Microsoft.AspNetCore.SignalR                    1.1.0
-CloudinaryDotNet                                1.26.2
+Microsoft.EntityFrameworkCore 8.0.0
+Microsoft.EntityFrameworkCore.Design 8.0.0
+Pomelo.EntityFrameworkCore.MySql 8.0.0
+Microsoft.AspNetCore.Authentication.JwtBearer 8.0.0
+System.IdentityModel.Tokens.Jwt 7.3.1
+BCrypt.Net-Next 4.0.3
+Microsoft.AspNetCore.SignalR 1.1.0
+CloudinaryDotNet 1.26.2
 ```
 
 ---
 
-## ☁️ Variables de entorno en Railway
+## Variables de entorno en Railway
 
 ```
 ConnectionStrings__DefaultConnection = server=mysql.railway.internal;port=3306;database=railway;user=root;password=...
-Jwt__Secret                          = TU_CLAVE_SECRETA
-Prestamo__DiasPlazo                  = 8
-Cloudinary__CloudName                = tu_cloud_name
-Cloudinary__ApiKey                   = tu_api_key
-Cloudinary__ApiSecret                = tu_api_secret
+Jwt__Secret = TU_CLAVE_SECRETA
+Prestamo__DiasPlazo = 8
+Cloudinary__CloudName = tu_cloud_name
+Cloudinary__ApiKey = tu_api_key
+Cloudinary__ApiSecret = tu_api_secret
 ```
 
 ---
 
-## 🛠️ Solución de problemas
+## Solución de problemas
 
 | Problema | Solución |
 |---|---|
@@ -371,7 +371,7 @@ Cloudinary__ApiSecret                = tu_api_secret
 
 ---
 
-## 🔄 Novedades v2.0 vs v1.0
+## Novedades v2.0 vs v1.0
 
 | Módulo | Novedad |
 |---|---|
@@ -385,6 +385,20 @@ Cloudinary__ApiSecret                = tu_api_secret
 | **Catálogo** | Sinopsis, popover de detalle, badge PDF, imágenes adaptativas |
 | **Cloudinary** | Fotos, portadas y PDFs — resuelve sistema efímero de Railway |
 | **BD** | 6 tablas, 13 índices, sin datos semilla, catálogo vacío |
+
+---
+
+## Actualizaciones Futuras
+
+| Versión | Módulos | Novedades principales | Estado |
+|---|---|---|---|
+| **v2.5** | Red Social Académica + Autenticación por correo | Feed institucional, feed por materia, comunidades académicas, perfiles extendidos, chat grupal por curso, verificación de cuenta y contraseña por correo (`bibliosync.app@gmail.com`) | Próximo |
+| **v3.0** | Aula Virtual (EVA) | Cursos, materias, gestión de actividades, entregas en Cloudinary, evaluaciones, banco de preguntas, libro de calificaciones, seguimiento de progreso por estudiante | Planificado |
+| **v3.1** | Sistema Académico (SINU) | Matrículas, períodos académicos, grupos, historial académico, horarios, solicitudes estudiantiles, gestión financiera opcional | Planificado |
+| **v3.2** | Analítica Educativa | Dashboard estudiantil, docente e institucional, alertas tempranas de riesgo académico, indicadores de rendimiento, actividades vencidas | Pre-tesis |
+| **v3.3** | Gestión Multiinstitucional | Arquitectura multi-tenant, registro controlado por cédula, importación masiva CSV/Excel, aislamiento total entre instituciones | Pre-tesis |
+| **v3.4** | Asistente Virtual Inteligente | Google Gemini API (`gemini-1.5-flash`), arquitectura desacoplada `IChatProvider`, soporte por JSON local, consultas académicas personalizadas, biblioteca inteligente, base de conocimiento institucional | Tesis |
+| **v3.5** | Seguridad y Cumplimiento Normativo | Auditoría completa `logs_auditoria`, hash de cédulas, cifrado de datos sensibles, cumplimiento Habeas Data, protección de datos de menores, alineación RGPD | Tesis |
 
 ---
 
